@@ -72,3 +72,11 @@ func (l *ListStream[T]) Range(rangeF func(idx int, element T)) *ListStream[T] {
 	RangeSlice(l.elements, rangeF)
 	return l
 }
+
+func (l *ListStream[T]) Convert(convertF func(element T) any) *ListStream[any] {
+	ls := newListStream[any]()
+	l.RangeItem(func(element T) {
+		ls.Append(convertF(element))
+	})
+	return ls
+}
